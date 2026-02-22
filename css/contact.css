@@ -1,0 +1,111 @@
+/* ========================================
+   CONTACT SECTION
+   ======================================== */
+
+.contact {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.contact-info {
+    padding: 2rem;
+}
+
+.contact-details {
+    margin-top: 3rem;
+}
+
+.detail-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-primary);
+    box-shadow: 0 2px 12px var(--shadow-color);
+}
+
+.detail-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.detail-item a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+}
+
+.detail-item a:hover {
+    color: var(--accent-secondary);
+}
+
+.contact-form-wrapper {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: 1.75rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+html.light-theme .form-group input,
+html.light-theme .form-group textarea {
+    background: #fafbfc;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    background: var(--card-bg);
+    box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 140px;
+}

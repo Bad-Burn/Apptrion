@@ -1,0 +1,86 @@
+/* ========================================
+   SECTION HEADERS
+   ======================================== */
+
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-header h2 {
+    font-size: 2.25rem;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 400;
+}
+
+/* ========================================
+   MISSION & VISION SECTION
+   ======================================== */
+
+.mission-vision {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.mission-vision-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.mission-item, .vision-item {
+    padding: 2rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 12px var(--shadow-color);
+    border-left: 4px solid var(--accent-primary);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.mission-item::before, .vision-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 107, 53, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.mission-item:hover, .vision-item:hover {
+    box-shadow: 0 4px 20px var(--shadow-color);
+    transform: translateY(-4px);
+}
+
+.mission-item:hover::before, .vision-item:hover::before {
+    opacity: 1;
+}
+
+.mission-vision h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.mission-vision p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}

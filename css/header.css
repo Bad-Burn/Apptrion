@@ -1,0 +1,182 @@
+/* ========================================
+   HEADER & NAVIGATION
+   ======================================== */
+
+#header-container {
+    width: 100%;
+    position: relative;
+    z-index: 1001;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.25rem 0;
+    z-index: 1000;
+    box-shadow: 0 2px 12px var(--shadow-color);
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.logo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.logo-img {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+.logo:hover .logo-img {
+    transform: scale(1.05);
+    filter: drop-shadow(0 2px 8px rgba(255, 107, 53, 0.4));
+}
+
+.company-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent-primary);
+    margin-left: 0.75rem;
+    transition: color 0.3s ease;
+}
+
+.logo:hover .company-name {
+    color: var(--accent-secondary);
+}
+
+nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-primary);
+    transition: width 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--accent-primary);
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* Theme Toggle Switch */
+.theme-toggle-switch {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 60px;
+    height: 32px;
+    position: relative;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.toggle-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
+    transition: all 0.4s ease;
+}
+
+.toggle-circle {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    left: 2px;
+    top: 2px;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: url('../assets/img/dark.png') center/90% no-repeat #000 !important;
+}
+
+.mode-label {
+    position: absolute;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.5px;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+/* Light theme toggle state */
+html.light-theme .theme-toggle-switch .toggle-inner {
+    background: rgba(0, 0, 0, 0.1);
+    justify-content: flex-end;
+}
+
+html.light-theme .theme-toggle-switch .toggle-circle {
+    left: auto;
+    right: 2px;
+    background: url('../assets/img/light.png') center/90% no-repeat #ffffff !important;
+}
+
+html.light-theme .theme-toggle-switch .mode-label {
+    opacity: 0;
+    left: 6px;
+    right: auto;
+}
+
+.theme-toggle-switch:hover .toggle-inner {
+    box-shadow: 0 0 15px rgba(255, 107, 53, 0.2);
+}
