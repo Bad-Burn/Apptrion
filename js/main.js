@@ -494,4 +494,3 @@ function initializeProjectsCarousel() {
 
     console.log('✅ Projects carousel initialized with', cards.length, 'cards - Drag enabled');
 }
-}
