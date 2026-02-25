@@ -97,6 +97,9 @@ function initializeThemeToggle() {
     if (themeToggle) {
         themeToggle.addEventListener('click', toggleTheme);
     }
+
+    // Initialize header scroll effect
+    initializeHeaderScroll();
 }
 
 /**
@@ -110,6 +113,26 @@ function toggleTheme() {
     localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
     
     console.log(`Theme switched to: ${isLightTheme ? 'light' : 'dark'}`);
+}
+
+/**
+ * Initialize Header Scroll Effect
+ * Makes header transparent at top and opaque when scrolled
+ */
+function initializeHeaderScroll() {
+    const header = document.querySelector('header');
+    
+    if (!header) return;
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    console.log('✅ Header scroll effect initialized');
 }
 
 /**
