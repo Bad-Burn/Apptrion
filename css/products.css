@@ -27,6 +27,13 @@
     gap: 2rem;
     scroll-behavior: smooth;
     transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
+}
+
+.projects-carousel:active {
+    cursor: grabbing;
 }
 
 /* Navigation buttons */

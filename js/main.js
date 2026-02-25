@@ -374,6 +374,12 @@ function initializeProjectsCarousel() {
     }
 
     let currentIndex = 0;
+    let isDragging = false;
+    let startX = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let animationID = null;
+    const dragThreshold = 50; // Minimum drag distance to trigger slide change
 
     // Set initial active card
     function updateActiveCard() {
@@ -388,6 +394,7 @@ function initializeProjectsCarousel() {
         const cardWidth = cards[0].offsetWidth;
         const gap = 32; // Gap between cards (2rem)
         const offset = currentIndex * (cardWidth + gap);
+        carousel.style.transition = 'transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1)';
         carousel.style.transform = `translateX(-${offset}px)`;
     }
 
@@ -403,7 +410,75 @@ function initializeProjectsCarousel() {
         updateActiveCard();
     }
 
-    // Event listeners
+    // Mouse down - start drag
+    function onDragStart(e) {
+        isDragging = true;
+        startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        carousel.style.transition = 'none';
+        console.log('🖱️ Drag started at:', startX);
+    }
+
+    // Mouse move - update drag position
+    function onDragMove(e) {
+        if (!isDragging) return;
+
+        const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        const dragAmount = currentX - startX;
+        
+        const cardWidth = cards[0].offsetWidth;
+        const gap = 32;
+        const baseOffset = currentIndex * (cardWidth + gap);
+        
+        currentTranslate = baseOffset - dragAmount;
+        carousel.style.transform = `translateX(-${currentTranslate}px)`;
+    }
+
+    // Mouse up - end drag and snap to nearest card
+    function onDragEnd(e) {
+        if (!isDragging) return;
+        isDragging = false;
+
+        const dragAmount = startX - (e.type.includes('mouse') ? e.clientX : e.changedTouches[0].clientX);
+        
+        // Determine if drag was significant enough to change slides
+        if (Math.abs(dragAmount) > dragThreshold) {
+            if (dragAmount > 0) {
+                nextCard();
+            } else {
+                prevCard();
+            }
+        } else {
+            // Snap back to current card
+            updateActiveCard();
+        }
+
+        console.log('🖱️ Drag ended, amount:', dragAmount);
+    }
+
+    // Add drag listeners
+    carousel.addEventListener('mousedown', onDragStart);
+    carousel.addEventListener('mousemove', onDragMove);
+    carousel.addEventListener('mouseup', onDragEnd);
+    carousel.addEventListener('mouseleave', onDragEnd);
+
+    // Touch support
+    carousel.addEventListener('touchstart', onDragStart);
+    carousel.addEventListener('touchmove', onDragMove);
+    carousel.addEventListener('touchend', onDragEnd);
+
+    // Cursor style
+    carousel.style.cursor = 'grab';
+    carousel.addEventListener('mousedown', () => {
+        carousel.style.cursor = 'grabbing';
+    });
+    carousel.addEventListener('mouseup', () => {
+        carousel.style.cursor = 'grab';
+    });
+    carousel.addEventListener('mouseleave', () => {
+        carousel.style.cursor = 'grab';
+    });
+
+    // Event listeners for buttons
     if (prevBtn) {
         prevBtn.addEventListener('click', prevCard);
     }
@@ -417,5 +492,6 @@ function initializeProjectsCarousel() {
     // Initialize first card as active
     updateActiveCard();
 
-    console.log('✅ Projects carousel initialized with', cards.length, 'cards');
+    console.log('✅ Projects carousel initialized with', cards.length, 'cards - Drag enabled');
+}
 }
