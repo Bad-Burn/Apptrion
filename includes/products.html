@@ -1,61 +1,75 @@
-<!-- Products & Services Section -->
+<!-- Projects Section -->
 <section id="products" class="products">
     <div class="container">
         <div class="section-header" data-aos="fade-up" data-aos-duration="1000">
-            <h2>Our Products</h2>
-            <p class="section-subtitle">Innovative solutions designed for real-world impact</p>
+            <h2>Our Projects</h2>
+            <p class="section-subtitle">From startups to enterprise, we've launched platforms that transformed operations, accelerated sales, and unlocked growth.</p>
         </div>
-        <div class="products-grid">
-            <!-- Product 1 -->
-            <div class="product-card" id="product-media-vault" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="100">
-                <div class="product-image-container">
-                    <img src="assets/img/mediavault.png" alt="Media Vault - Marketplace for Creative Assets" class="product-image">
-                </div>
-                <h3>Media Vault</h3>
-                <p class="description">A marketplace for original photos, illustrations, music, and sound effects, empowering independent artists to monetize their work while giving buyers flexible, culturally relevant assets.</p>
-                <div class="features">
-                    <h4>Key Modules</h4>
-                    <ul>
-                        <li>User Module: account creation, profile management, subscription handling</li>
-                        <li>Creator Module: upload and manage assets, licensing and pricing controls</li>
-                        <li>Marketplace: asset catalog, search and filtering, secure payment gateway</li>
-                    </ul>
+        
+        <div class="projects-carousel-container">
+            <button class="carousel-nav carousel-nav-prev" id="projects-prev">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6"></path>
+                </svg>
+            </button>
+
+            <div class="carousel-wrapper">
+                <div class="projects-carousel" id="projects-carousel">
+                    <!-- Project 1 -->
+                    <div class="project-card" data-aos="zoom-in" data-aos-duration="1000">
+                        <div class="project-image">
+                            <img src="assets/img/mediavault.png" alt="Media Vault" class="project-image-img">
+                            <div class="project-overlay">
+                                <h3>Media Vault</h3>
+                                <p>A marketplace for original photos, illustrations, music, and sound effects.</p>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h4>Media Vault</h4>
+                            <p class="project-subtitle">Marketplace for Creative Assets</p>
+                            <p class="description">Empowering independent artists to monetize their work while giving buyers flexible, culturally relevant assets.</p>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-card" data-aos="zoom-in" data-aos-duration="1000">
+                        <div class="project-image">
+                            <img src="assets/img/polishedpro.png" alt="PolishedPro" class="project-image-img">
+                            <div class="project-overlay">
+                                <h3>PolishedPro</h3>
+                                <p>Business management system for nail artists and clients.</p>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h4>PolishedPro</h4>
+                            <p class="project-subtitle">Business Management for Nail Artists</p>
+                            <p class="description">An all-in-one system that bridges the gap between local nail artists and their clients with structured booking.</p>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-card" data-aos="zoom-in" data-aos-duration="1000">
+                        <div class="project-image">
+                            <img src="assets/img/learnlink.png" alt="LearnLink" class="project-image-img">
+                            <div class="project-overlay">
+                                <h3>LearnLink</h3>
+                                <p>Centralized webinar platform with registration links.</p>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h4>LearnLink</h4>
+                            <p class="project-subtitle">Centralized Webinar Platform</p>
+                            <p class="description">Centralizes webinars with details and registration links, allowing instructors to host on their platforms.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Product 2 -->
-            <div class="product-card" id="product-polishedpro" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="200">
-                <div class="product-image-container">
-                    <img src="assets/img/polishedpro.png" alt="PolishedPro - Business Management for Nail Artists" class="product-image">
-                </div>
-                <h3>PolishedPro</h3>
-                <p class="description">An all-in-one business management system that bridges the gap between local nail artists and their clients with structured booking, replacing disorganized social media DMs.</p>
-                <div class="features">
-                    <h4>Key Features</h4>
-                    <ul>
-                        <li>Artist Dashboard: calendar management, earnings tracker, client history, analytics</li>
-                        <li>AI Insights: smart scheduling suggestions, revenue forecasting, trend analysis</li>
-                        <li>Client Booking Portal: service menu, instant booking, AI assistant chat</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Product 3 -->
-            <div class="product-card" id="product-learnlink" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="300">
-                <div class="product-image-container">
-                    <img src="assets/img/learnlink.png" alt="LearnLink - Centralized Webinar Platform" class="product-image">
-                </div>
-                <h3>LearnLink</h3>
-                <p class="description">Centralizes webinars with details and registration links, allowing instructors to host on their platforms while simplifying discovery and streamlining professional development for learners.</p>
-                <div class="features">
-                    <h4>Key Modules</h4>
-                    <ul>
-                        <li>User Module: account creation, profile management, event registration</li>
-                        <li>Instructor Module: event creation, platform integration, analytics tracking</li>
-                        <li>Event Catalog: centralized listing, search and filtering, category organization</li>
-                    </ul>
-                </div>
-            </div>
+            <button class="carousel-nav carousel-nav-next" id="projects-next">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"></path>
+                </svg>
+            </button>
         </div>
     </div>
 </section>

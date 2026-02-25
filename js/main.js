@@ -57,6 +57,11 @@ function loadPartial(containerId, filePath) {
                 setTimeout(initializeCarousel, 100);
             }
 
+            // Initialize projects carousel after products section is loaded
+            if (containerId === 'products-container') {
+                setTimeout(initializeProjectsCarousel, 100);
+            }
+
             // Initialize contact form after contact section is loaded
             if (containerId === 'contact-container') {
                 initializeContactForm();
@@ -350,4 +355,67 @@ function initializeCarousel() {
     }, 5000);
 
     console.log('✅✅✅ CAROUSEL FULLY INITIALIZED - Auto-rotation started every 5 seconds');
+}
+
+/**
+ * Initialize Projects Carousel Functionality
+ */
+function initializeProjectsCarousel() {
+    console.log('🚀 PROJECTS CAROUSEL INIT STARTING');
+    
+    const carousel = document.getElementById('projects-carousel');
+    const cards = document.querySelectorAll('.project-card');
+    const prevBtn = document.getElementById('projects-prev');
+    const nextBtn = document.getElementById('projects-next');
+
+    if (!carousel || cards.length === 0) {
+        console.warn('⚠️ Projects carousel elements not found');
+        return;
+    }
+
+    let currentIndex = 0;
+
+    // Set initial active card
+    function updateActiveCard() {
+        cards.forEach((card, index) => {
+            card.classList.toggle('active', index === currentIndex);
+        });
+        updateCarouselPosition();
+    }
+
+    // Update carousel scroll position
+    function updateCarouselPosition() {
+        const cardWidth = cards[0].offsetWidth;
+        const gap = 32; // Gap between cards (2rem)
+        const offset = currentIndex * (cardWidth + gap);
+        carousel.style.transform = `translateX(-${offset}px)`;
+    }
+
+    // Next card
+    function nextCard() {
+        currentIndex = (currentIndex + 1) % cards.length;
+        updateActiveCard();
+    }
+
+    // Previous card
+    function prevCard() {
+        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+        updateActiveCard();
+    }
+
+    // Event listeners
+    if (prevBtn) {
+        prevBtn.addEventListener('click', prevCard);
+    }
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextCard);
+    }
+
+    // Handle window resize
+    window.addEventListener('resize', updateCarouselPosition);
+
+    // Initialize first card as active
+    updateActiveCard();
+
+    console.log('✅ Projects carousel initialized with', cards.length, 'cards');
 }
