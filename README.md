@@ -1,162 +1,61 @@
 # Apptrion Website
 
-A modern, responsive website for Apptrion Company featuring dynamic animations, dark/light theme switcher, and a Node.js backend API for contact form handling.
+Marketing site for Apptrion, a software product studio. It is a single static page (HTML, CSS and vanilla JavaScript, no build step) with an optional Node.js server that handles contact form submissions.
 
-## Project Structure
+## Project structure
 
 ```
 Apptrion Company/
-├── index.html                 # Main HTML file
-├── server.js                  # Express.js backend server
-├── package.json               # Node.js dependencies
-├── .env.example               # Environment variables template
-├── README.md                  # Project documentation
-├── BACKEND_SETUP.md           # Backend setup guide
+├── index.html              # The whole page: header, hero, about, work, process, team, contact, footer
 ├── css/
-│   └── styles.css            # All styles (1200+ lines, responsive, animations)
+│   └── styles.css          # Design tokens, layout, components, product mockups, responsive rules
 ├── js/
-│   └── main.js               # Frontend JS (dynamic loading, forms, animations)
-├── includes/                 # HTML partials (dynamically loaded)
-│   ├── header.html
-│   ├── hero.html
-│   ├── products.html
-│   ├── why-apptrion.html
-│   ├── team.html
-│   ├── contact.html
-│   └── footer.html
-└── assets/
-    └── img/                  # Images (logo, team photos)
-        ├── ApptrionLogo.png
-        ├── Profile.png
-        ├── Profile1.png
-        └── Profile2.png
+│   └── main.js             # Theme toggle, mobile menu, scroll effects, contact form
+├── assets/img/
+│   ├── favicon.svg         # Logo mark, adapts to the browser's light/dark setting
+│   ├── apple-touch-icon.png
+│   ├── og-image.png        # Social sharing preview
+│   └── team/               # Optimized founder portraits (WebP)
+├── server.js               # Express server: serves the site and POST /api/contact
+├── package.json
+└── .env.example            # Email settings for the contact form
 ```
 
-## Key Features
+## Running locally
 
-✨ **Modern UI/UX Design**
-- Smooth entrance animations (AOS library)
-- Scroll-triggered effects
-- Staggered card animations
-- Interactive hover effects
-- Gradient accents and shadows
+Open `index.html` directly in a browser, or run the server:
 
-🌙 **Theme System**
-- Dark mode (default)
-- Light mode with toggle button
-- Persistent theme preference (localStorage)
-- Smooth color transitions
-
-📱 **Responsive Design**
-- Mobile-first approach
-- Tablet breakpoint (768px)
-- Mobile breakpoint (480px)
-- Fixed sticky header on all devices
-- Optimized navigation for mobile
-
-🔌 **Backend API**
-- Express.js server
-- Contact form submission endpoint
-- Optional email notifications (Nodemailer)
-- Health check endpoint
-- CORS enabled
-
-📸 **Image Integration**
-- Logo in header with hover animation
-- Team member profile photos
-- Profile images in dedicated assets folder
-- Optimized for all formats
-
-## Quick Start
-
-### Frontend Only (No Backend)
-```bash
-# Simply open in browser
-Open index.html directly in your web browser
-# All features work except contact form email
-```
-
-### With Backend API
-
-#### 1. Install Dependencies
 ```bash
 npm install
+npm start          # http://localhost:3000
 ```
 
-#### 2. Configure Environment (Optional for email)
-```bash
-# Copy environment template
-cp .env.example .env
+## Contact form
 
-# Edit .env and add your email configuration
-# EMAIL_USER=your-email@gmail.com
-# EMAIL_PASS=your-app-specific-password
+The form validates input in the browser, then posts JSON to `/api/contact`.
+
+- **With the Node server** (`npm start`): submissions are logged to the console and, when email is configured, sent to `CONTACT_EMAIL` with the visitor's address as reply-to.
+- **On static hosting** (GitHub Pages) or when `index.html` is opened as a file, there is no API. The form detects this and opens the visitor's email app with the message filled in, addressed to the email in the form's `data-fallback-email` attribute.
+
+To enable email from the server, copy `.env.example` to `.env` and fill in:
+
+```
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASS=your-app-specific-password
+CONTACT_EMAIL=where-submissions-go@example.com
 ```
 
-#### 3. Start Server
-```bash
-npm start
-```
+Gmail requires 2-Step Verification and an app-specific password.
 
-Server runs on `http://localhost:3000`
+## Design notes
 
----
+- **Brand colours** come from the logo: ink `#0e0e0f` and red `#920303` (a brighter `#e5484d` / `#f0524f` is used in dark mode for contrast). All colours are CSS custom properties at the top of `styles.css`.
+- **Type**: Geist and Geist Mono from Google Fonts.
+- **Theme**: follows the visitor's system setting until they use the toggle; the choice is saved in `localStorage` under `theme`.
+- **Logo**: drawn as an inline SVG symbol (`#apptrion-mark`) so it can switch colours with the theme. The hero graphic is the same mark shown on its equilateral construction grid.
+- **Product previews** in the Work section are built in HTML/CSS (no screenshots), so they stay sharp and follow the theme. Replace them with real screenshots when available.
+- **Motion** is limited to fade-in on scroll and the hero drawing, and is disabled for visitors who prefer reduced motion.
 
-## Browser Support
+## Deployment
 
-- Chrome/Edge (latest)
-- Firefox (latest)
-- Safari (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## Technology Stack
-
-**Frontend:**
-- HTML5
-- CSS3 (CSS Variables, Flexbox, Grid)
-- Vanilla JavaScript
-- AOS (Animate On Scroll) library
-
-**Backend:**
-- Node.js
-- Express.js
-- Nodemailer (optional)
-- CORS support
-
-3. **No build process required** - it's a static HTML/CSS website
-
-## File Organization Benefits
-
-- **Scalability**: Easy to add more CSS files, images, and JavaScript
-- **Maintainability**: Clear separation of concerns
-- **Performance**: Better caching and organization
-- **Professionalism**: Industry-standard project structure
-
-## Sections Included
-
-- **Header/Navigation**: Sticky header with logo
-- **Hero Section**: Eye-catching banner with CTAs
-- **Mission & Vision**: Company values
-- **Products**: Feature cards for three main products
-- **Why Apptrion**: Value propositions
-- **Team**: Team member cards with photos
-- **Contact**: Contact form and email
-- **Footer**: Links and copyright
-
-## Responsive Breakpoints
-
-- Desktop: Full layout
-- Tablet (≤768px): Adjusted spacing and font sizes
-- Mobile (≤480px): Optimized for smaller screens
-
-## Browser Support
-
-Works on all modern browsers:
-- Chrome
-- Firefox
-- Safari
-- Edge
-
----
-
-**Last Updated:** February 20, 2026
+Pushing to `main` deploys the site to GitHub Pages via `.github/workflows/static.yml`.
