@@ -3,51 +3,689 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apptrion - Innovate Today, Transform Tomorrow</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-    
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/hero.css">
-    <link rel="stylesheet" href="css/buttons.css">
-    <link rel="stylesheet" href="css/sections.css">
-    <link rel="stylesheet" href="css/products.css">
-    <link rel="stylesheet" href="css/why-apptrion.css">
-    <link rel="stylesheet" href="css/team.css">
-    <link rel="stylesheet" href="css/contact.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <title>Apptrion | Software product studio</title>
+    <meta name="description" content="Apptrion is a software product studio that designs and builds web and mobile platforms for creators, professionals and learners.">
+    <meta name="theme-color" content="#fafaf8">
+    <!-- Update these URLs if the site moves to a custom domain -->
+    <link rel="canonical" href="https://bad-burn.github.io/Apptrion/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Apptrion">
+    <meta property="og:url" content="https://bad-burn.github.io/Apptrion/">
+    <meta property="og:title" content="Apptrion | Software product studio">
+    <meta property="og:description" content="We design and build web and mobile platforms for creators, professionals and learners.">
+    <meta property="og:image" content="https://bad-burn.github.io/Apptrion/assets/img/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+    <!-- Set theme before first paint to avoid a flash of the wrong theme -->
+    <script>
+        (function () {
+            var root = document.documentElement;
+            var theme = null;
+            root.classList.add('js');
+            try { theme = localStorage.getItem('theme'); } catch (e) {}
+            if (theme !== 'light' && theme !== 'dark') {
+                theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            root.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Header will be loaded here -->
-    <div id="header-container"></div>
+    <!-- Brand mark, reused via <use> -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <symbol id="apptrion-mark" viewBox="0 0 996 786">
+            <polygon fill="currentColor" points="365,154 443,289 158,786 0,786"/>
+            <polygon fill="currentColor" points="454,0 731,479 574,479 376,136"/>
+            <polygon fill="currentColor" points="674,652 830,652 908,786 750,786"/>
+            <polygon style="fill: var(--mark-accent, #920303)" points="344,498 917,498 996,633 266,633"/>
+        </symbol>
+    </svg>
 
-    <main>
-        <!-- Hero & Mission/Vision will be loaded here -->
-        <div id="hero-container"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-        <!-- Products will be loaded here -->
-        <div id="products-container"></div>
+    <!-- Header -->
+    <header class="site-header" data-header>
+        <div class="container header-inner">
+            <a class="brand" href="#top" aria-label="Apptrion, back to top">
+                <svg class="brand-mark" aria-hidden="true"><use href="#apptrion-mark"/></svg>
+                <span class="brand-name">Apptrion</span>
+            </a>
 
-        <!-- Why Apptrion will be loaded here -->
-        <div id="why-apptrion-container"></div>
+            <nav class="site-nav" aria-label="Primary">
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#work">Work</a></li>
+                    <li><a href="#process">Process</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
 
-        <!-- Team will be loaded here -->
-        <div id="team-container"></div>
+            <div class="header-actions">
+                <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch theme">
+                    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+                </button>
+                <a class="btn btn-primary btn-sm header-cta" href="#contact">Start a project</a>
+                <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+                    <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+                    <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+            </div>
+        </div>
 
-        <!-- Contact will be loaded here -->
-        <div id="contact-container"></div>
+        <div class="mobile-menu" id="mobile-menu" hidden>
+            <nav aria-label="Mobile">
+                <ul>
+                    <li><a class="mobile-link" href="#about">About</a></li>
+                    <li><a class="mobile-link" href="#work">Work</a></li>
+                    <li><a class="mobile-link" href="#process">Process</a></li>
+                    <li><a class="mobile-link" href="#team">Team</a></li>
+                    <li><a class="mobile-link" href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <a class="btn btn-primary btn-lg mobile-cta" href="#contact">Start a project</a>
+        </div>
+    </header>
+
+    <main id="main">
+        <!-- Hero -->
+        <section class="hero" id="top" aria-labelledby="hero-title">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <p class="eyebrow" data-reveal>Software product studio</p>
+                    <h1 class="hero-title" id="hero-title" data-reveal style="--d: 1">We build the software behind good ideas.</h1>
+                    <p class="hero-lead" data-reveal style="--d: 2">Apptrion designs and develops web and mobile platforms for creators, professionals and learners, from the first sketch through launch and beyond.</p>
+                    <div class="hero-actions" data-reveal style="--d: 3">
+                        <a class="btn btn-primary btn-lg" href="#contact">
+                            Start a project
+                            <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                        </a>
+                        <a class="btn btn-ghost btn-lg" href="#work">View our work</a>
+                    </div>
+                </div>
+
+                <figure class="hero-art" aria-hidden="true">
+                    <div class="art-frame">
+                        <svg class="art" viewBox="-146 -76 1200 1200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <pattern id="art-grid" x="0" y="6" width="60" height="60" patternUnits="userSpaceOnUse">
+                                    <path d="M60 0H0V60" fill="none" class="art-grid-line"/>
+                                </pattern>
+                                <radialGradient id="art-fade" cx="0.5" cy="0.5" r="0.5">
+                                    <stop offset="0.35" stop-color="#fff"/>
+                                    <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+                                </radialGradient>
+                                <mask id="art-mask">
+                                    <rect x="-146" y="-76" width="1200" height="1200" fill="url(#art-fade)"/>
+                                </mask>
+                            </defs>
+
+                            <rect class="art-grid art-fade" x="-146" y="-76" width="1200" height="1200" fill="url(#art-grid)" mask="url(#art-mask)"/>
+
+                            <!-- Construction geometry -->
+                            <g class="art-guides">
+                                <circle class="art-guide art-draw" style="--d: 0" cx="454" cy="524.2" r="524.2" pathLength="1"/>
+                                <line class="art-guide art-draw" style="--d: 1" x1="524" y1="-121" x2="-70" y2="907" pathLength="1"/>
+                                <line class="art-guide art-draw" style="--d: 2" x1="384" y1="-121" x2="978" y2="907" pathLength="1"/>
+                                <line class="art-guide art-draw" style="--d: 3" x1="-140" y1="786" x2="1048" y2="786" pathLength="1"/>
+                                <line class="art-guide art-draw" style="--d: 4" x1="341" y1="75" x2="785" y2="847" pathLength="1"/>
+                                <circle class="art-guide art-guide--dash art-fade" style="--d: 5" cx="454" cy="524.2" r="262.1"/>
+                                <line class="art-guide art-guide--dash art-fade" style="--d: 6" x1="-146" y1="498" x2="1054" y2="498"/>
+                                <line class="art-guide art-guide--dash art-fade" style="--d: 6" x1="-146" y1="633" x2="1054" y2="633"/>
+                                <path class="art-guide art-fade" style="--d: 7" d="M110 786A110 110 0 0 0 55 690.7"/>
+                                <text class="art-label art-fade" style="--d: 7" x="132" y="742">60°</text>
+                            </g>
+
+                            <!-- Mark -->
+                            <g class="art-mark">
+                                <polygon class="art-ink art-piece" style="--d: 0" points="365,154 443,289 158,786 0,786"/>
+                                <polygon class="art-ink art-piece" style="--d: 1" points="454,0 731,479 574,479 376,136"/>
+                                <polygon class="art-ink art-piece" style="--d: 2" points="674,652 830,652 908,786 750,786"/>
+                                <polygon class="art-accent art-bar" points="344,498 917,498 996,633 266,633"/>
+                            </g>
+
+                            <!-- Vertices -->
+                            <g class="art-nodes art-fade" style="--d: 8">
+                                <circle class="art-node" cx="454" cy="0" r="9"/>
+                                <circle class="art-node" cx="0" cy="786" r="9"/>
+                                <circle class="art-node" cx="908" cy="786" r="9"/>
+                                <path class="art-guide" d="M436 524.2h36M454 506.2v36"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <figcaption>
+                        <span>Fig. 01 / The Apptrion mark</span>
+                        <span>Equilateral grid, 60&deg;</span>
+                    </figcaption>
+                </figure>
+            </div>
+
+            <div class="container">
+                <section class="capabilities" aria-labelledby="capabilities-title">
+                    <h2 class="sr-only" id="capabilities-title">What we do</h2>
+                    <ul class="capabilities-list">
+                        <li class="capability" data-reveal>
+                            <span class="cap-num">01</span>
+                            <h3 class="cap-title">Product strategy</h3>
+                            <p>Turn an idea into a scoped plan: who it's for, what ships first and how success is measured.</p>
+                        </li>
+                        <li class="capability" data-reveal style="--d: 1">
+                            <span class="cap-num">02</span>
+                            <h3 class="cap-title">UI/UX design</h3>
+                            <p>Interfaces shaped around real workflows, prototyped and refined before development starts.</p>
+                        </li>
+                        <li class="capability" data-reveal style="--d: 2">
+                            <span class="cap-num">03</span>
+                            <h3 class="cap-title">Web &amp; mobile development</h3>
+                            <p>Fast, maintainable applications built on modern, well-supported technology.</p>
+                        </li>
+                        <li class="capability" data-reveal style="--d: 3">
+                            <span class="cap-num">04</span>
+                            <h3 class="cap-title">Launch &amp; support</h3>
+                            <p>Deployment, monitoring and steady improvement once real users arrive.</p>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="section about" id="about" aria-labelledby="about-title">
+            <div class="container">
+                <div class="about-grid">
+                    <div data-reveal>
+                        <p class="eyebrow">About Apptrion</p>
+                        <h2 class="section-title" id="about-title">A focused team building products that make everyday work simpler.</h2>
+                    </div>
+                    <div class="about-body" data-reveal style="--d: 1">
+                        <p class="about-lead">We're a founder-led software studio. We build and run our own platforms, and we partner with founders and organizations who need a dependable team to bring theirs to life.</p>
+                        <p>Every engagement gets the same standard: clear communication, careful design and code we're proud to put in front of real users.</p>
+                    </div>
+                </div>
+
+                <div class="principles">
+                    <article class="principle" data-reveal>
+                        <p class="principle-label"><span>01</span><span>Mission</span></p>
+                        <p class="principle-text">Apptrion empowers individuals and businesses by developing innovative, reliable and accessible applications that simplify everyday tasks, connect communities and enhance creativity.</p>
+                    </article>
+                    <article class="principle" data-reveal style="--d: 1">
+                        <p class="principle-label"><span>02</span><span>Vision</span></p>
+                        <p class="principle-text">To be a leading innovator in digital solutions, transforming ideas into seamless, impactful and user-friendly experiences for everyone.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work -->
+        <section class="section work" id="work" aria-labelledby="work-title">
+            <div class="container">
+                <header class="section-head" data-reveal>
+                    <p class="eyebrow">Selected work</p>
+                    <h2 class="section-title" id="work-title">Platforms we've designed and built</h2>
+                    <p class="section-lead">Each product starts with a specific community and the problem it deals with day to day. These are three we've taken from concept to working software.</p>
+                </header>
+
+                <div class="work-grid">
+                    <!-- Media Vault -->
+                    <article class="work-card work-card--feature" id="media-vault" data-reveal>
+                        <div class="work-info">
+                            <p class="work-kicker">Creative marketplace</p>
+                            <h3 class="work-title">Media Vault</h3>
+                            <p class="work-desc">A marketplace for original photos, illustrations, music and sound effects. Independent artists earn from their work, and buyers get flexible, culturally relevant assets for their projects.</p>
+                            <ul class="tags" aria-label="Focus areas">
+                                <li>Creator marketplace</li>
+                                <li>Digital licensing</li>
+                                <li>Audio &amp; visual assets</li>
+                            </ul>
+                        </div>
+                        <div class="work-visual" aria-hidden="true">
+                            <div class="mock mock-browser">
+                                <div class="mock-chrome">
+                                    <span class="mock-dots"><i></i><i></i><i></i></span>
+                                    <span class="mock-url">mediavault</span>
+                                    <span></span>
+                                </div>
+                                <div class="mv">
+                                    <div class="mv-nav">
+                                        <span class="mv-logo">Media Vault</span>
+                                        <span class="mv-search">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+                                            Search photos, music, sound effects
+                                        </span>
+                                        <span class="mv-btn">Upload</span>
+                                    </div>
+                                    <div class="mv-tabs">
+                                        <span class="is-active">All</span><span>Photos</span><span>Illustrations</span><span>Music</span><span>Sound FX</span>
+                                    </div>
+                                    <div class="mv-assets">
+                                        <div class="mv-asset">
+                                            <div class="mv-thumb art-dunes"></div>
+                                            <div class="mv-meta"><span class="mv-name">Golden hour dunes</span><span class="mv-type">Photo</span></div>
+                                        </div>
+                                        <div class="mv-asset">
+                                            <div class="mv-thumb art-shapes"></div>
+                                            <div class="mv-meta"><span class="mv-name">Paper cut forms</span><span class="mv-type">Illustration</span></div>
+                                        </div>
+                                        <div class="mv-asset">
+                                            <div class="mv-thumb mv-audio">
+                                                <svg class="mv-wave" viewBox="0 0 118 40" fill="none" stroke-linecap="round" stroke-width="2">
+                                                    <path class="mv-wave-played" d="M3 16.5V23.5M7 14V26M11 16.5V23.5M15 17V23M19 16V24M23 11.5V28.5M27 15.5V24.5M31 14V26M35 9V31M39 13V27M43 10V30"/>
+                                                    <path class="mv-wave-rest" d="M47 7.5V32.5M51 6V34M55 10.5V29.5M59 13V27M63 11V29M67 11.5V28.5M71 10V30M75 14V26M79 8.5V31.5M83 15.5V24.5M87 10V30M91 17V23M95 15V25M99 14.5V25.5M103 14.5V25.5M107 15V25M111 15.5V24.5M115 16V24"/>
+                                                </svg>
+                                                <span class="mv-play mv-play--pause"></span>
+                                            </div>
+                                            <div class="mv-meta"><span class="mv-name">Morning market</span><span class="mv-type">Sound FX</span></div>
+                                        </div>
+                                        <div class="mv-asset">
+                                            <div class="mv-thumb art-forest"></div>
+                                            <div class="mv-meta"><span class="mv-name">Pine ridge</span><span class="mv-type">Photo</span></div>
+                                        </div>
+                                        <div class="mv-asset">
+                                            <div class="mv-thumb mv-audio mv-audio--alt">
+                                                <svg class="mv-wave" viewBox="0 0 118 40" fill="none" stroke-linecap="round" stroke-width="2">
+                                                    <path class="mv-wave-rest" d="M3 15.5V24.5M7 14.5V25.5M11 13V27M15 13V27M19 13.5V26.5M23 12V28M27 12V28M31 16.5V23.5M35 10V30M39 8.5V31.5M43 9V31M47 13V27M51 8V32M55 5.5V34.5M59 5V35M63 6.5V33.5M67 14.5V25.5M71 15V25M75 9.5V30.5M79 8V32M83 15V25M87 13V27M91 14.5V25.5M95 13.5V26.5M99 13V27M103 17.5V22.5M107 15V25M111 15V25M115 17V23"/>
+                                                </svg>
+                                                <span class="mv-play"></span>
+                                            </div>
+                                            <div class="mv-meta"><span class="mv-name">Slow tide</span><span class="mv-type">Music</span></div>
+                                        </div>
+                                        <div class="mv-asset">
+                                            <div class="mv-thumb art-bloom"></div>
+                                            <div class="mv-meta"><span class="mv-name">Bloom study</span><span class="mv-type">Illustration</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- PolishedPro -->
+                    <article class="work-card" id="polishedpro" data-reveal>
+                        <div class="work-visual" aria-hidden="true">
+                            <div class="mock mock-phone">
+                                <div class="pp">
+                                    <div class="pp-status">
+                                        <span>9:41</span>
+                                        <span class="pp-island"></span>
+                                        <span class="pp-status-icons"><i></i><i></i></span>
+                                    </div>
+                                    <div class="pp-header">
+                                        <span class="pp-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></span>
+                                        <span class="pp-heading">Book appointment</span>
+                                    </div>
+                                    <div class="pp-artist">
+                                        <span class="pp-avatar">MR</span>
+                                        <span><b>Mika Reyes</b><small>Nail artist &middot; Gel &amp; nail art</small></span>
+                                    </div>
+                                    <p class="pp-label">October</p>
+                                    <div class="pp-days">
+                                        <span><small>Mon</small>19</span>
+                                        <span><small>Tue</small>20</span>
+                                        <span class="is-active"><small>Wed</small>21</span>
+                                        <span><small>Thu</small>22</span>
+                                        <span><small>Fri</small>23</span>
+                                    </div>
+                                    <p class="pp-label">Available times</p>
+                                    <div class="pp-slots">
+                                        <span>9:00</span><span class="is-active">10:30</span><span>1:00</span>
+                                        <span class="is-off">2:30</span><span>4:00</span><span>5:30</span>
+                                    </div>
+                                    <div class="pp-summary"><span>Gel manicure</span><span>60 min</span></div>
+                                    <span class="pp-cta">Confirm booking</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="work-info">
+                            <p class="work-kicker">Business management</p>
+                            <h3 class="work-title">PolishedPro</h3>
+                            <p class="work-desc">An all-in-one system for nail artists and their clients. Structured booking replaces back-and-forth messages, so artists can run their schedule and clients can book in a few taps.</p>
+                            <ul class="tags" aria-label="Focus areas">
+                                <li>Online booking</li>
+                                <li>Client management</li>
+                                <li>Scheduling</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- LearnLink -->
+                    <article class="work-card" id="learnlink" data-reveal style="--d: 1">
+                        <div class="work-visual" aria-hidden="true">
+                            <div class="mock mock-browser">
+                                <div class="mock-chrome">
+                                    <span class="mock-dots"><i></i><i></i><i></i></span>
+                                    <span class="mock-url">learnlink</span>
+                                    <span></span>
+                                </div>
+                                <div class="ll">
+                                    <div class="ll-head">
+                                        <span class="ll-title">Upcoming webinars</span>
+                                        <span class="ll-filters"><span class="is-active">All</span><span>Design</span><span>Business</span><span>Tech</span></span>
+                                    </div>
+                                    <div class="ll-list">
+                                        <div class="ll-row">
+                                            <span class="ll-date"><small>Oct</small>21</span>
+                                            <span class="ll-info"><b>Intro to UX research</b><small>Hosted on Zoom &middot; 60 min</small></span>
+                                            <span class="ll-btn">Register</span>
+                                        </div>
+                                        <div class="ll-row">
+                                            <span class="ll-date"><small>Nov</small>04</span>
+                                            <span class="ll-info"><b>Pricing your first product</b><small>Hosted on Google Meet &middot; 45 min</small></span>
+                                            <span class="ll-btn">Register</span>
+                                        </div>
+                                        <div class="ll-row">
+                                            <span class="ll-date"><small>Nov</small>12</span>
+                                            <span class="ll-info"><b>Cloud basics for beginners</b><small>Hosted on Teams &middot; 90 min</small></span>
+                                            <span class="ll-btn is-done">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+                                                Registered
+                                            </span>
+                                        </div>
+                                        <div class="ll-row">
+                                            <span class="ll-date"><small>Nov</small>19</span>
+                                            <span class="ll-info"><b>Writing for the web</b><small>Hosted on Zoom &middot; 45 min</small></span>
+                                            <span class="ll-btn">Register</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="work-info">
+                            <p class="work-kicker">Education platform</p>
+                            <h3 class="work-title">LearnLink</h3>
+                            <p class="work-desc">A central home for webinars. Learners browse sessions with full details and registration links in one place, while instructors keep hosting on the platforms they already use.</p>
+                            <ul class="tags" aria-label="Focus areas">
+                                <li>Webinar directory</li>
+                                <li>Event registration</li>
+                                <li>Instructor tools</li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process -->
+        <section class="section process inverse" id="process" aria-labelledby="process-title">
+            <div class="container">
+                <header class="section-head section-head--split" data-reveal>
+                    <div>
+                        <p class="eyebrow">How we work</p>
+                        <h2 class="section-title" id="process-title">From first conversation to launch</h2>
+                    </div>
+                    <p class="section-lead">A structured, transparent process that keeps your goals at the center of every decision, with a clear view of what's happening at each stage.</p>
+                </header>
+
+                <ol class="steps" data-reveal>
+                    <li class="step">
+                        <div class="step-head">
+                            <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/></svg></span>
+                            <span class="step-num">01</span>
+                        </div>
+                        <h3 class="step-title">Discovery</h3>
+                        <p class="step-sub">Start with your project</p>
+                        <p class="step-desc">We learn your goals, users and constraints, and ask the questions that bring the requirements into focus.</p>
+                    </li>
+                    <li class="step">
+                        <div class="step-head">
+                            <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 6h7.5a3 3 0 0 1 0 6h-5a3 3 0 0 0 0 6H17"/></svg></span>
+                            <span class="step-num">02</span>
+                        </div>
+                        <h3 class="step-title">Planning</h3>
+                        <p class="step-sub">Map out the roadmap</p>
+                        <p class="step-desc">Clear milestones, timelines and deliverables, so everyone knows what ships and when.</p>
+                    </li>
+                    <li class="step">
+                        <div class="step-head">
+                            <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"/></svg></span>
+                            <span class="step-num">03</span>
+                        </div>
+                        <h3 class="step-title">Development</h3>
+                        <p class="step-sub">Design and build</p>
+                        <p class="step-desc">We work in short iterations and share progress regularly, so you can steer early instead of late.</p>
+                    </li>
+                    <li class="step">
+                        <div class="step-head">
+                            <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3Z"/><path d="M9 12l2 2 4-4"/></svg></span>
+                            <span class="step-num">04</span>
+                        </div>
+                        <h3 class="step-title">Testing</h3>
+                        <p class="step-sub">Ensure quality</p>
+                        <p class="step-desc">Functional, performance and security checks catch issues before they reach your users.</p>
+                    </li>
+                    <li class="step">
+                        <div class="step-head">
+                            <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M7 9l5-5 5 5M5 14v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5"/></svg></span>
+                            <span class="step-num">05</span>
+                        </div>
+                        <h3 class="step-title">Deployment</h3>
+                        <p class="step-sub">Launch to production</p>
+                        <p class="step-desc">We release, monitor closely and hand over everything your team needs to run the product.</p>
+                    </li>
+                </ol>
+
+                <div class="support" data-reveal>
+                    <span class="support-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.9-3.5M4 4v4h4M4 13a8 8 0 0 0 14.9 3.5M20 20v-4h-4"/></svg></span>
+                    <div>
+                        <h3 class="support-title">Continuous growth &amp; support</h3>
+                        <p>Launch is the start. We stay on to monitor, improve and add features as your users and business grow.</p>
+                    </div>
+                    <a class="btn btn-ghost" href="#contact">Talk to us</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team -->
+        <section class="section team" id="team" aria-labelledby="team-title">
+            <div class="container">
+                <header class="section-head section-head--split" data-reveal>
+                    <div>
+                        <p class="eyebrow">Team</p>
+                        <h2 class="section-title" id="team-title">The founders behind Apptrion</h2>
+                    </div>
+                    <p class="section-lead">A small leadership team covering product, engineering and finance, working directly with the people we build for.</p>
+                </header>
+
+                <ul class="team-grid">
+                    <li class="person" data-reveal>
+                        <div class="person-photo">
+                            <img src="assets/img/team/jan-jacob-driodoco.webp" alt="Portrait of Jan Jacob Driodoco" width="720" height="900" loading="lazy" decoding="async">
+                        </div>
+                        <div class="person-body">
+                            <h3 class="person-name">Jan Jacob Driodoco</h3>
+                            <p class="person-role">Founder &amp; CEO</p>
+                            <p class="person-bio">Sets the company's direction and strategy, and leads the product vision across everything Apptrion builds.</p>
+                            <a class="person-email" href="mailto:janjacobdriodoco@gmail.com">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></svg>
+                                janjacobdriodoco@gmail.com
+                            </a>
+                        </div>
+                    </li>
+                    <li class="person" data-reveal style="--d: 1">
+                        <div class="person-photo">
+                            <img src="assets/img/team/lovely-helaenah-teodoro.webp" alt="Portrait of Lovely Helaenah Teodoro" width="720" height="900" loading="lazy" decoding="async">
+                        </div>
+                        <div class="person-body">
+                            <h3 class="person-name">Lovely Helaenah Teodoro</h3>
+                            <p class="person-role">Founder &amp; CTO</p>
+                            <p class="person-bio">Leads architecture and engineering, making sure what we ship is fast, secure and built to last.</p>
+                            <a class="person-email" href="mailto:lovelyteodoro0203@gmail.com">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></svg>
+                                lovelyteodoro0203@gmail.com
+                            </a>
+                        </div>
+                    </li>
+                    <li class="person" data-reveal style="--d: 2">
+                        <div class="person-photo">
+                            <img src="assets/img/team/czamantta-althea-salinas.webp" alt="Portrait of Czamantta Althea Salinas" width="720" height="900" loading="lazy" decoding="async">
+                        </div>
+                        <div class="person-body">
+                            <h3 class="person-name">Czamantta Althea Salinas</h3>
+                            <p class="person-role">Founder &amp; CFO</p>
+                            <p class="person-bio">Oversees finance and operations, keeping the company's growth steady and sustainable for the long term.</p>
+                            <a class="person-email" href="mailto:czamsalinas@gmail.com">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></svg>
+                                czamsalinas@gmail.com
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="section contact" id="contact" aria-labelledby="contact-title">
+            <div class="container contact-grid">
+                <div class="contact-intro" data-reveal>
+                    <p class="eyebrow">Contact</p>
+                    <h2 class="section-title" id="contact-title">Have a project in mind?</h2>
+                    <p class="section-lead">Tell us what you're building and where it stands today. We'll get back to you to talk through scope, timeline and next steps.</p>
+
+                    <ol class="next-steps">
+                        <li>
+                            <span>01</span>
+                            <div><b>We read your message</b><p>and reply with any questions we have.</p></div>
+                        </li>
+                        <li>
+                            <span>02</span>
+                            <div><b>Intro call</b><p>A short conversation about your goals, users and constraints.</p></div>
+                        </li>
+                        <li>
+                            <span>03</span>
+                            <div><b>Plan &amp; estimate</b><p>A roadmap with milestones, timeline and deliverables.</p></div>
+                        </li>
+                    </ol>
+
+                    <div class="contact-direct">
+                        <p class="contact-direct-label">Prefer email?</p>
+                        <div class="contact-direct-row">
+                            <a href="mailto:janjacobdriodoco@gmail.com">janjacobdriodoco@gmail.com</a>
+                            <button class="copy-btn" type="button" data-copy="janjacobdriodoco@gmail.com" aria-label="Copy email address">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"/></svg>
+                                <span data-copy-label>Copy</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card" data-reveal style="--d: 1">
+                    <form id="contact-form" class="contact-form" novalidate data-endpoint="/api/contact" data-fallback-email="janjacobdriodoco@gmail.com">
+                        <div class="field-row">
+                            <div class="field">
+                                <label for="cf-name">Name</label>
+                                <input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="120" placeholder="Your name" aria-describedby="cf-name-error">
+                                <p class="field-error" id="cf-name-error"></p>
+                            </div>
+                            <div class="field">
+                                <label for="cf-email">Email</label>
+                                <input id="cf-email" name="email" type="email" autocomplete="email" required maxlength="200" placeholder="you@company.com" aria-describedby="cf-email-error">
+                                <p class="field-error" id="cf-email-error"></p>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="cf-company">Company <span class="optional">Optional</span></label>
+                            <input id="cf-company" name="company" type="text" autocomplete="organization" maxlength="160" placeholder="Where you work">
+                        </div>
+
+                        <fieldset class="field">
+                            <legend>What can we help with?</legend>
+                            <div class="chips">
+                                <label class="chip"><input type="radio" name="projectType" value="New product"><span>New product</span></label>
+                                <label class="chip"><input type="radio" name="projectType" value="Web app"><span>Web app</span></label>
+                                <label class="chip"><input type="radio" name="projectType" value="Mobile app"><span>Mobile app</span></label>
+                                <label class="chip"><input type="radio" name="projectType" value="UI/UX design"><span>UI/UX design</span></label>
+                                <label class="chip"><input type="radio" name="projectType" value="Something else"><span>Something else</span></label>
+                            </div>
+                        </fieldset>
+
+                        <div class="field">
+                            <label for="cf-message">Project details</label>
+                            <textarea id="cf-message" name="message" rows="5" required maxlength="5000" placeholder="A few lines about your idea, goals and timeline" aria-describedby="cf-message-error"></textarea>
+                            <p class="field-error" id="cf-message-error"></p>
+                        </div>
+
+                        <!-- Spam trap: hidden from people, often filled by bots -->
+                        <div class="hp" aria-hidden="true">
+                            <label for="cf-website">Website</label>
+                            <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off">
+                        </div>
+
+                        <div class="form-status" data-form-status role="status" aria-live="polite"></div>
+
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary btn-lg btn-submit">
+                                <span data-submit-label>Send message</span>
+                                <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                <span class="spinner" aria-hidden="true"></span>
+                            </button>
+                            <p class="form-note">We only use your details to reply to you.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer will be loaded here -->
-    <div id="footer-container"></div>
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a class="brand" href="#top" aria-label="Apptrion, back to top">
+                        <svg class="brand-mark" aria-hidden="true"><use href="#apptrion-mark"/></svg>
+                        <span class="brand-name">Apptrion</span>
+                    </a>
+                    <p class="footer-tagline">Innovate today, transform tomorrow.</p>
+                    <p>A software product studio building web and mobile platforms for creators, professionals and learners.</p>
+                </div>
+                <div class="footer-cols">
+                    <div class="footer-col">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#process">Process</a></li>
+                            <li><a href="#team">Team</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>Products</h3>
+                        <ul>
+                            <li><a href="#media-vault">Media Vault</a></li>
+                            <li><a href="#polishedpro">PolishedPro</a></li>
+                            <li><a href="#learnlink">LearnLink</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col footer-col--contact">
+                        <h3>Contact</h3>
+                        <ul>
+                            <li><a href="mailto:janjacobdriodoco@gmail.com">janjacobdriodoco@gmail.com</a></li>
+                            <li><a href="#contact">Start a project</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span data-year>2026</span> Apptrion. All rights reserved.</p>
+                <a class="to-top" href="#top">
+                    Back to top
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
 
-    <!-- AOS (Animate On Scroll) Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-
-    <!-- Load JavaScript for dynamic content -->
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>

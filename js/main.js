@@ -1,519 +1,427 @@
 /**
- * Apptrion Website Main JavaScript
- * Dynamically loads HTML sections/partials
+ * Apptrion website
+ * Theme switching, navigation, scroll effects and the contact form.
  */
+(function () {
+    'use strict';
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Apptrion website loading...');
-    
-    // Load all HTML partials
-    loadPartials();
-    
-    // Initialize theme system
-    initializeTheme();
-});
+    const root = document.documentElement;
+    const THEME_KEY = 'theme';
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-/**
- * Load HTML partials into their containers
- */
-function loadPartials() {
-    const partials = [
-        { id: 'header-container', file: 'includes/header.html' },
-        { id: 'hero-container', file: 'includes/hero.html' },
-        { id: 'products-container', file: 'includes/products.html' },
-        { id: 'why-apptrion-container', file: 'includes/why-apptrion.html' },
-        { id: 'team-container', file: 'includes/team.html' },
-        { id: 'contact-container', file: 'includes/contact.html' },
-        { id: 'footer-container', file: 'includes/footer.html' }
-    ];
-
-    partials.forEach(partial => {
-        loadPartial(partial.id, partial.file);
+    document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        initHeader();
+        initMobileMenu();
+        initScrollSpy();
+        initReveal();
+        initCopyButtons();
+        initContactForm();
+        setCurrentYear();
     });
-}
 
-/**
- * Load a single HTML partial file
- */
-function loadPartial(containerId, filePath) {
-    fetch(filePath)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to load ${filePath}: ${response.statusText}`);
-            }
-            return response.text();
-        })
-        .then(html => {
-            document.getElementById(containerId).innerHTML = html;
-            console.log(`Loaded: ${filePath}`);
-            
-            // Initialize theme toggle button after header is loaded
-            if (containerId === 'header-container') {
-                initializeThemeToggle();
-            }
+    /* ------------------------------------------------------------------
+       Theme
+       The initial theme is applied by an inline script in <head>.
+       ------------------------------------------------------------------ */
 
-            // Initialize carousel after hero is loaded
-            if (containerId === 'hero-container') {
-                setTimeout(initializeCarousel, 100);
-            }
-
-            // Initialize projects carousel after products section is loaded
-            if (containerId === 'products-container') {
-                setTimeout(initializeProjectsCarousel, 100);
-            }
-
-            // Initialize contact form after contact section is loaded
-            if (containerId === 'contact-container') {
-                initializeContactForm();
-            }
-        })
-        .catch(error => {
-            console.error(`Error loading ${filePath}:`, error);
-        });
-}
-
-/**
- * Initialize the theme system
- */
-function initializeTheme() {
-    // Check localStorage for saved theme preference
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    
-    if (savedTheme === 'light') {
-        document.documentElement.classList.add('light-theme');
-        updateThemeIcon('light');
-    } else {
-        document.documentElement.classList.remove('light-theme');
-        updateThemeIcon('dark');
-    }
-}
-
-/**
- * Initialize theme toggle button click handler
- */
-function initializeThemeToggle() {
-    const themeToggle = document.getElementById('themeToggle');
-    
-    if (themeToggle) {
-        themeToggle.addEventListener('click', toggleTheme);
-    }
-
-    // Initialize header scroll effect
-    initializeHeaderScroll();
-}
-
-/**
- * Toggle between dark and light theme
- */
-function toggleTheme() {
-    const html = document.documentElement;
-    const isLightTheme = html.classList.toggle('light-theme');
-    
-    // Save preference to localStorage
-    localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
-    
-    console.log(`Theme switched to: ${isLightTheme ? 'light' : 'dark'}`);
-}
-
-/**
- * Initialize Header Scroll Effect
- * Makes header transparent at top and opaque when scrolled
- */
-function initializeHeaderScroll() {
-    const header = document.querySelector('header');
-    
-    if (!header) return;
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
+    function readStoredTheme() {
+        try {
+            return localStorage.getItem(THEME_KEY);
+        } catch (e) {
+            return null;
         }
-    });
+    }
 
-    console.log('✅ Header scroll effect initialized');
-}
+    function applyTheme(theme) {
+        root.setAttribute('data-theme', theme);
 
-/**
- * Smooth scroll for navigation links
- */
-document.addEventListener('click', function(e) {
-    if (e.target.matches('a[href^="#"]')) {
-        e.preventDefault();
-        const target = document.querySelector(e.target.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+        const toggle = document.querySelector('[data-theme-toggle]');
+        if (toggle) {
+            toggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+        }
+
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) {
+            themeColor.setAttribute('content', theme === 'dark' ? '#0b0b0c' : '#fafaf8');
+        }
+    }
+
+    function initTheme() {
+        applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+
+        const toggle = document.querySelector('[data-theme-toggle]');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                applyTheme(next);
+                try {
+                    localStorage.setItem(THEME_KEY, next);
+                } catch (e) {
+                    /* Storage unavailable: the choice lasts for this page view only */
+                }
             });
         }
-    }
-});
 
-/**
- * Initialize AOS (Animate On Scroll) library
- */
-function initializeAOS() {
-    if (typeof AOS !== 'undefined') {
-        AOS.init({
-            duration: 1000,
-            offset: 100,
-            once: true,
-            easing: 'ease-in-out'
+        // Follow the operating system setting until the visitor picks a theme
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+        const onSystemChange = (event) => {
+            if (!readStoredTheme()) {
+                applyTheme(event.matches ? 'dark' : 'light');
+            }
+        };
+        if (systemDark.addEventListener) {
+            systemDark.addEventListener('change', onSystemChange);
+        } else if (systemDark.addListener) {
+            systemDark.addListener(onSystemChange);
+        }
+    }
+
+    /* ------------------------------------------------------------------
+       Header
+       ------------------------------------------------------------------ */
+
+    function initHeader() {
+        const header = document.querySelector('[data-header]');
+        if (!header) return;
+
+        const update = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+        update();
+        window.addEventListener('scroll', update, { passive: true });
+    }
+
+    function initMobileMenu() {
+        const header = document.querySelector('[data-header]');
+        const toggle = document.querySelector('[data-menu-toggle]');
+        const menu = document.getElementById('mobile-menu');
+        if (!header || !toggle || !menu) return;
+
+        const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
+
+        const setOpen = (open) => {
+            toggle.setAttribute('aria-expanded', String(open));
+            toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+            menu.hidden = !open;
+            header.classList.toggle('is-menu-open', open);
+            root.classList.toggle('menu-open', open);
+        };
+
+        toggle.addEventListener('click', () => setOpen(!isOpen()));
+
+        menu.addEventListener('click', (event) => {
+            if (event.target.closest('a')) setOpen(false);
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && isOpen()) {
+                setOpen(false);
+                toggle.focus();
+            }
+        });
+
+        // Close the panel if the viewport grows past the mobile breakpoint
+        const desktop = window.matchMedia('(min-width: 901px)');
+        const onDesktop = (event) => {
+            if (event.matches) setOpen(false);
+        };
+        if (desktop.addEventListener) {
+            desktop.addEventListener('change', onDesktop);
+        } else if (desktop.addListener) {
+            desktop.addListener(onDesktop);
+        }
+    }
+
+    /* ------------------------------------------------------------------
+       Highlight the nav link for the section in view
+       ------------------------------------------------------------------ */
+
+    function initScrollSpy() {
+        const links = Array.from(document.querySelectorAll('.site-nav a[href^="#"]'));
+        const sections = document.querySelectorAll('main section[id]');
+        if (!links.length || !sections.length || !('IntersectionObserver' in window)) return;
+
+        const setActive = (id) => {
+            links.forEach((link) => {
+                if (link.getAttribute('href') === '#' + id) {
+                    link.setAttribute('aria-current', 'true');
+                } else {
+                    link.removeAttribute('aria-current');
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) setActive(entry.target.id);
+            });
+        }, { rootMargin: '-45% 0px -50% 0px' });
+
+        sections.forEach((section) => observer.observe(section));
+    }
+
+    /* ------------------------------------------------------------------
+       Reveal elements as they scroll into view
+       ------------------------------------------------------------------ */
+
+    function initReveal() {
+        const elements = document.querySelectorAll('[data-reveal]');
+        if (!elements.length) return;
+
+        if (prefersReducedMotion.matches || !('IntersectionObserver' in window)) {
+            elements.forEach((el) => el.classList.add('is-visible'));
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target);
+            });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
+
+        elements.forEach((el) => observer.observe(el));
+    }
+
+    /* ------------------------------------------------------------------
+       Copy to clipboard
+       ------------------------------------------------------------------ */
+
+    function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text);
+        }
+
+        return new Promise((resolve, reject) => {
+            const field = document.createElement('textarea');
+            field.value = text;
+            field.setAttribute('readonly', '');
+            field.style.position = 'fixed';
+            field.style.opacity = '0';
+            document.body.appendChild(field);
+            field.select();
+            const ok = document.execCommand('copy');
+            field.remove();
+            if (ok) {
+                resolve();
+            } else {
+                reject(new Error('Copy failed'));
+            }
         });
     }
-}
 
-// Initialize AOS when partials are loaded
-setTimeout(initializeAOS, 500);
+    function initCopyButtons() {
+        document.querySelectorAll('[data-copy]').forEach((button) => {
+            const label = button.querySelector('[data-copy-label]');
+            const original = label ? label.textContent : '';
+            let timer;
 
-/**
- * Initialize Contact Form Handler
- */
-function initializeContactForm() {
-    const contactForm = document.getElementById('contact-form');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', handleContactFormSubmit);
+            button.addEventListener('click', () => {
+                copyText(button.getAttribute('data-copy'))
+                    .then(() => {
+                        if (label) label.textContent = 'Copied';
+                    })
+                    .catch(() => {
+                        if (label) label.textContent = 'Copy failed';
+                    })
+                    .finally(() => {
+                        clearTimeout(timer);
+                        timer = setTimeout(() => {
+                            if (label) label.textContent = original;
+                        }, 2000);
+                    });
+            });
+        });
     }
-}
 
-/**
- * Handle Contact Form Submission
- */
-async function handleContactFormSubmit(e) {
-    e.preventDefault();
-    
-    const form = e.target;
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.textContent;
-    
-    // Get form data
-    const formData = {
-        name: document.getElementById('contact-name').value.trim(),
-        email: document.getElementById('contact-email').value.trim(),
-        message: document.getElementById('contact-message').value.trim()
+    /* ------------------------------------------------------------------
+       Contact form
+       Posts to the Node API when it is available. On static hosting
+       (GitHub Pages, or opening the file directly) there is no API, so the
+       form falls back to opening the visitor's email app with the message
+       already filled in.
+       ------------------------------------------------------------------ */
+
+    const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const REQUEST_TIMEOUT_MS = 12000;
+
+    const validators = {
+        name: (value) => (value ? '' : 'Please enter your name.'),
+        email: (value) => {
+            if (!value) return 'Please enter your email address.';
+            return EMAIL_PATTERN.test(value) ? '' : 'Please enter a valid email address.';
+        },
+        message: (value) => {
+            if (!value) return 'Please tell us a little about your project.';
+            return value.length >= 10 ? '' : 'Please add a little more detail.';
+        }
     };
 
-    // Validate form
-    if (!formData.name || !formData.email || !formData.message) {
-        showFormMessage('error', 'Please fill in all fields');
-        return;
-    }
+    const ICONS = {
+        success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>',
+        error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg>'
+    };
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-        showFormMessage('error', 'Please enter a valid email address');
-        return;
-    }
+    function initContactForm() {
+        const form = document.getElementById('contact-form');
+        if (!form) return;
 
-    // Show loading state
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
+        const status = form.querySelector('[data-form-status]');
+        const submitButton = form.querySelector('[type="submit"]');
+        const submitLabel = form.querySelector('[data-submit-label]');
+        const fallbackEmail = form.getAttribute('data-fallback-email');
 
-    try {
-        // Send to backend API
-        const response = await fetch('/api/contact', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+        const fieldValue = (name) => (form.elements[name] ? form.elements[name].value.trim() : '');
+
+        const setFieldError = (name, message) => {
+            const input = form.elements[name];
+            const field = input.closest('.field');
+            const error = field.querySelector('.field-error');
+            field.classList.toggle('has-error', Boolean(message));
+            input.setAttribute('aria-invalid', message ? 'true' : 'false');
+            if (error) error.textContent = message;
+        };
+
+        const validate = () => {
+            let firstInvalid = null;
+            Object.keys(validators).forEach((name) => {
+                const message = validators[name](fieldValue(name));
+                setFieldError(name, message);
+                if (message && !firstInvalid) firstInvalid = form.elements[name];
+            });
+            return firstInvalid;
+        };
+
+        // Re-check a field as the visitor fixes it
+        Object.keys(validators).forEach((name) => {
+            form.elements[name].addEventListener('input', () => {
+                if (form.elements[name].closest('.field').classList.contains('has-error')) {
+                    setFieldError(name, validators[name](fieldValue(name)));
+                }
+            });
         });
 
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-            showFormMessage('success', result.message);
-            form.reset(); // Clear form
-            console.log('✅ Contact form submitted successfully');
-        } else {
-            showFormMessage('error', result.message || 'Failed to send message');
-            console.error('❌ Contact form submission failed:', result);
-        }
-
-    } catch (error) {
-        console.error('❌ Error submitting contact form:', error);
-        
-        // Fallback: Try to show error message
-        if (error instanceof TypeError && error.message.includes('fetch')) {
-            showFormMessage('error', 'Server not available. Please check the connection.');
-        } else {
-            showFormMessage('error', 'An error occurred. Please try again later.');
-        }
-    } finally {
-        // Restore button state
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalBtnText;
-    }
-}
-
-/**
- * Show form status message
- */
-function showFormMessage(type, message) {
-    // Remove existing message if any
-    const existingMessage = document.querySelector('.form-message');
-    if (existingMessage) {
-        existingMessage.remove();
-    }
-
-    // Create message element
-    const messageEl = document.createElement('div');
-    messageEl.className = `form-message form-message-${type}`;
-    messageEl.textContent = message;
-    messageEl.style.cssText = `
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border-radius: 6px;
-        font-weight: 500;
-        animation: slideInUp 0.3s ease;
-    `;
-
-    if (type === 'success') {
-        messageEl.style.backgroundColor = '#d4edda';
-        messageEl.style.color = '#155724';
-        messageEl.style.border = '1px solid #c3e6cb';
-    } else {
-        messageEl.style.backgroundColor = '#f8d7da';
-        messageEl.style.color = '#721c24';
-        messageEl.style.border = '1px solid #f5c6cb';
-    }
-
-    // Insert before form
-    const form = document.getElementById('contact-form');
-    if (form && form.parentElement) {
-        form.parentElement.insertBefore(messageEl, form);
-        
-        // Auto-remove success message after 5 seconds
-        if (type === 'success') {
-            setTimeout(() => {
-                messageEl.remove();
-            }, 5000);
-        }
-    }
-}
-
-/**
- * Initialize Carousel Functionality
- */
-function initializeCarousel() {
-    console.log('🚀 CAROUSEL INIT STARTING');
-    
-    const slides = document.querySelectorAll('.carousel-slide');
-    const dotsContainer = document.getElementById('dotsContainer');
-    const carouselContainer = document.querySelector('.carousel-container');
-
-    console.log('📊 DEBUG: Slides found:', slides.length);
-    console.log('📊 DEBUG: Dots container:', dotsContainer);
-    console.log('📊 DEBUG: Carousel container:', carouselContainer);
-
-    if (slides.length === 0) {
-        console.error('❌ CRITICAL: No carousel slides found!');
-        return;
-    }
-
-    let currentSlide = 0;
-
-    // Show first slide immediately
-    if (slides[0]) {
-        slides[0].classList.add('active');
-        console.log('✅ First slide activated');
-    }
-
-    // Create pagination dots
-    slides.forEach((slide, index) => {
-        console.log('🖼️ Slide', index, ':', slide.style.backgroundImage);
-        
-        const dot = document.createElement('div');
-        dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
-        dot.addEventListener('click', () => {
-            console.log('📍 Clicked dot', index);
-            goToSlide(index);
-        });
-        dotsContainer.appendChild(dot);
-    });
-
-    console.log('✅ Created', slides.length, 'pagination dots');
-
-    // Navigate to specific slide
-    function goToSlide(index) {
-        currentSlide = index;
-        console.log('🎬 GO TO SLIDE:', index);
-        
-        slides.forEach((slide, i) => {
-            if (i === currentSlide) {
-                slide.classList.add('active');
-            } else {
-                slide.classList.remove('active');
+        const showStatus = (type, message, link) => {
+            status.className = 'form-status is-' + type;
+            status.innerHTML = ICONS[type];
+            const text = document.createElement('p');
+            text.textContent = message;
+            if (link) {
+                text.append(' ');
+                const anchor = document.createElement('a');
+                anchor.href = link.href;
+                anchor.textContent = link.label;
+                text.append(anchor, '.');
             }
-        });
-        
-        updateDots();
-    }
+            status.append(text);
+        };
 
-    // Update active dot
-    function updateDots() {
-        document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
-            if (i === currentSlide) {
-                dot.classList.add('active');
+        const clearStatus = () => {
+            status.className = 'form-status';
+            status.textContent = '';
+        };
+
+        const setLoading = (loading) => {
+            submitButton.classList.toggle('is-loading', loading);
+            submitButton.setAttribute('aria-disabled', String(loading));
+            submitLabel.textContent = loading ? 'Sending' : 'Send message';
+        };
+
+        const buildMailto = (data) => {
+            const subject = 'Project inquiry from ' + data.name + (data.company ? ' (' + data.company + ')' : '');
+            const lines = [data.message, '', '---', 'Name: ' + data.name, 'Email: ' + data.email];
+            if (data.company) lines.push('Company: ' + data.company);
+            if (data.projectType) lines.push('Project type: ' + data.projectType);
+            return 'mailto:' + fallbackEmail +
+                '?subject=' + encodeURIComponent(subject) +
+                '&body=' + encodeURIComponent(lines.join('\n'));
+        };
+
+        const sendToApi = async (data) => {
+            const controller = typeof AbortController === 'function' ? new AbortController() : null;
+            const timeout = controller ? setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS) : null;
+
+            try {
+                const response = await fetch(form.getAttribute('data-endpoint'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                    body: JSON.stringify(data),
+                    signal: controller ? controller.signal : undefined
+                });
+
+                const isJson = (response.headers.get('content-type') || '').includes('application/json');
+                const body = isJson ? await response.json() : null;
+
+                if (body && response.ok && body.success) {
+                    return { ok: true, message: body.message };
+                }
+                if (body && response.status === 400 && body.message) {
+                    return { ok: false, message: body.message };
+                }
+                // Anything else means there is no working API behind this page
+                return null;
+            } catch (error) {
+                return null;
+            } finally {
+                if (timeout) clearTimeout(timeout);
+            }
+        };
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            if (submitButton.classList.contains('is-loading')) return;
+            clearStatus();
+
+            const firstInvalid = validate();
+            if (firstInvalid) {
+                firstInvalid.focus();
+                return;
+            }
+
+            // Bots tend to fill every field, including the hidden one
+            if (fieldValue('website')) {
+                form.reset();
+                showStatus('success', 'Thanks for reaching out. We will be in touch soon.');
+                return;
+            }
+
+            const selectedType = form.querySelector('input[name="projectType"]:checked');
+            const data = {
+                name: fieldValue('name'),
+                email: fieldValue('email'),
+                company: fieldValue('company'),
+                projectType: selectedType ? selectedType.value : '',
+                message: fieldValue('message')
+            };
+
+            setLoading(true);
+            const result = await sendToApi(data);
+            setLoading(false);
+
+            if (result && result.ok) {
+                form.reset();
+                showStatus('success', result.message || 'Thanks for reaching out. We will be in touch soon.');
+            } else if (result) {
+                showStatus('error', result.message);
             } else {
-                dot.classList.remove('active');
+                window.location.href = buildMailto(data);
+                showStatus(
+                    'success',
+                    'Your email app should open with your message ready to send. If it doesn’t, write to us at',
+                    { href: 'mailto:' + fallbackEmail, label: fallbackEmail }
+                );
             }
         });
     }
 
-    // Next slide
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slides.length;
-        console.log('▶️ NEXT SLIDE:', currentSlide);
-        goToSlide(currentSlide);
-    }
+    /* ------------------------------------------------------------------
+       Footer year
+       ------------------------------------------------------------------ */
 
-    // Auto-rotate carousel every 5 seconds
-    const autoRotateInterval = setInterval(() => {
-        nextSlide();
-    }, 5000);
-
-    console.log('✅✅✅ CAROUSEL FULLY INITIALIZED - Auto-rotation started every 5 seconds');
-}
-
-/**
- * Initialize Projects Carousel Functionality
- */
-function initializeProjectsCarousel() {
-    console.log('🚀 PROJECTS CAROUSEL INIT STARTING');
-    
-    const carousel = document.getElementById('projects-carousel');
-    const cards = document.querySelectorAll('.project-card');
-    const prevBtn = document.getElementById('projects-prev');
-    const nextBtn = document.getElementById('projects-next');
-
-    if (!carousel || cards.length === 0) {
-        console.warn('⚠️ Projects carousel elements not found');
-        return;
-    }
-
-    let currentIndex = 0;
-    let isDragging = false;
-    let startX = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
-    let animationID = null;
-    const dragThreshold = 50; // Minimum drag distance to trigger slide change
-
-    // Set initial active card
-    function updateActiveCard() {
-        cards.forEach((card, index) => {
-            card.classList.toggle('active', index === currentIndex);
+    function setCurrentYear() {
+        const year = String(new Date().getFullYear());
+        document.querySelectorAll('[data-year]').forEach((el) => {
+            el.textContent = year;
         });
-        updateCarouselPosition();
     }
-
-    // Update carousel scroll position
-    function updateCarouselPosition() {
-        const cardWidth = cards[0].offsetWidth;
-        const gap = 32; // Gap between cards (2rem)
-        const offset = currentIndex * (cardWidth + gap);
-        carousel.style.transition = 'transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1)';
-        carousel.style.transform = `translateX(-${offset}px)`;
-    }
-
-    // Next card
-    function nextCard() {
-        currentIndex = (currentIndex + 1) % cards.length;
-        updateActiveCard();
-    }
-
-    // Previous card
-    function prevCard() {
-        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-        updateActiveCard();
-    }
-
-    // Mouse down - start drag
-    function onDragStart(e) {
-        isDragging = true;
-        startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-        carousel.style.transition = 'none';
-        console.log('🖱️ Drag started at:', startX);
-    }
-
-    // Mouse move - update drag position
-    function onDragMove(e) {
-        if (!isDragging) return;
-
-        const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-        const dragAmount = currentX - startX;
-        
-        const cardWidth = cards[0].offsetWidth;
-        const gap = 32;
-        const baseOffset = currentIndex * (cardWidth + gap);
-        
-        currentTranslate = baseOffset - dragAmount;
-        carousel.style.transform = `translateX(-${currentTranslate}px)`;
-    }
-
-    // Mouse up - end drag and snap to nearest card
-    function onDragEnd(e) {
-        if (!isDragging) return;
-        isDragging = false;
-
-        const dragAmount = startX - (e.type.includes('mouse') ? e.clientX : e.changedTouches[0].clientX);
-        
-        // Determine if drag was significant enough to change slides
-        if (Math.abs(dragAmount) > dragThreshold) {
-            if (dragAmount > 0) {
-                nextCard();
-            } else {
-                prevCard();
-            }
-        } else {
-            // Snap back to current card
-            updateActiveCard();
-        }
-
-        console.log('🖱️ Drag ended, amount:', dragAmount);
-    }
-
-    // Add drag listeners
-    carousel.addEventListener('mousedown', onDragStart);
-    carousel.addEventListener('mousemove', onDragMove);
-    carousel.addEventListener('mouseup', onDragEnd);
-    carousel.addEventListener('mouseleave', onDragEnd);
-
-    // Touch support
-    carousel.addEventListener('touchstart', onDragStart);
-    carousel.addEventListener('touchmove', onDragMove);
-    carousel.addEventListener('touchend', onDragEnd);
-
-    // Cursor style
-    carousel.style.cursor = 'grab';
-    carousel.addEventListener('mousedown', () => {
-        carousel.style.cursor = 'grabbing';
-    });
-    carousel.addEventListener('mouseup', () => {
-        carousel.style.cursor = 'grab';
-    });
-    carousel.addEventListener('mouseleave', () => {
-        carousel.style.cursor = 'grab';
-    });
-
-    // Event listeners for buttons
-    if (prevBtn) {
-        prevBtn.addEventListener('click', prevCard);
-    }
-    if (nextBtn) {
-        nextBtn.addEventListener('click', nextCard);
-    }
-
-    // Handle window resize
-    window.addEventListener('resize', updateCarouselPosition);
-
-    // Initialize first card as active
-    updateActiveCard();
-
-    console.log('✅ Projects carousel initialized with', cards.length, 'cards - Drag enabled');
-}
+})();

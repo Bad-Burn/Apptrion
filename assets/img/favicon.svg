@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -165 1116 1116">
+  <style>
+    .ink { fill: #0e0e0f; }
+    .accent { fill: #920303; }
+    @media (prefers-color-scheme: dark) {
+      .ink { fill: #ededef; }
+      .accent { fill: #e5484d; }
+    }
+  </style>
+  <g class="ink">
+    <polygon points="365,154 443,289 158,786 0,786"/>
+    <polygon points="454,0 731,479 574,479 376,136"/>
+    <polygon points="674,652 830,652 908,786 750,786"/>
+  </g>
+  <polygon class="accent" points="344,498 917,498 996,633 266,633"/>
+</svg>
